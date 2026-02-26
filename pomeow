@@ -44,12 +44,13 @@ draw_work() {
 }
 
 draw_break() {
-    local frame="$1" lcount=0
+    local frame="$1" elapsed=$2 lcount=0
     [[ $BREAK_LINES -gt 0 ]] && printf '\033[%dA' "$BREAK_LINES"
     while IFS= read -r line; do
         printf '\r\033[K%s\n' "$line"
         lcount=$(( lcount + 1 ))
     done <<< "$frame"
+    printf '\r\033[K  +%s' "$(fmt_time "$elapsed")"
     BREAK_LINES=$lcount
 }
 
@@ -98,7 +99,7 @@ main() {
         rem=$BREAK_SECS
         next_change=$(( (RANDOM % 5) + 2 ))
         while [[ $rem -gt 0 ]]; do
-            draw_break "${FRAMES[$fidx]}"
+            draw_break "${FRAMES[$fidx]}" $(( BREAK_SECS - rem ))
             sleep 1
             rem=$(( rem - 1 ))
             next_change=$(( next_change - 1 ))
