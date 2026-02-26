@@ -1,6 +1,6 @@
 # pomeow
 
-A cat that interrupts your terminal every Pomodoro break.
+The cat has arrived. Stop working.
 
 ```
  /\_/\
@@ -11,17 +11,20 @@ A cat that interrupts your terminal every Pomodoro break.
 
 ---
 
+pomeow is not a Pomodoro timer.
+
+It is a cat that visits your terminal every 25 minutes.
+When it appears, you stop working. You look at it. You attend to it.
+It is a cat. That is not optional.
+
+---
+
 ## Install
 
 ```sh
 git clone https://github.com/yourusername/pomeow.git
 cd pomeow
 chmod +x pomeow
-```
-
-Put it on your PATH:
-
-```sh
 ln -s "$PWD/pomeow" /usr/local/bin/pomeow
 ```
 
@@ -31,33 +34,16 @@ ln -s "$PWD/pomeow" /usr/local/bin/pomeow
 $ pomeow
 ```
 
-No flags. No config. Press `Ctrl+C` to quit.
+Run it in a visible tmux pane. No flags. No config. Press `Ctrl+C` to quit.
 
 ## How it works
 
-| Phase | Duration | Display                    |
-|-------|----------|----------------------------|
-| Work  | 25 min   | Countdown timer            |
-| Break | 4 min    | Cat + countdown            |
+| Phase | Duration | What happens        |
+|-------|----------|---------------------|
+| Work  | 25 min   | Countdown timer     |
+| Break | 4 min    | The cat arrives     |
 
-The cat changes expression every 2–6 seconds.
-
-## Example
-
-Work phase:
-
-```
-  Work  24:37
-```
-
-Break phase:
-
-```
- /\_/\
-( o.o )
- > ^ <
-  Break  03:45
-```
+The cat changes pose every 2–6 seconds.
 
 ## License
 

@@ -6,8 +6,8 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CATS_FILE="${SCRIPT_DIR}/cats.txt"
 
-WORK_SECS=$((25 * 60))
-BREAK_SECS=$((4 * 60))
+WORK_SECS="${POMEOW_WORK_SECS:-$((25 * 60))}"
+BREAK_SECS="${POMEOW_BREAK_SECS:-$((4 * 60))}"
 
 declare -a FRAMES
 BREAK_LINES=0
