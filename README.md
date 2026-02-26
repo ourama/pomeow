@@ -6,7 +6,8 @@ The cat has arrived. Stop working.
  /\_/\
 ( o.o )
  > ^ <
-  +01:32
+
+  01:32
 ```
 
 ---
