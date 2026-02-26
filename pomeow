@@ -46,16 +46,20 @@ draw_work() {
     printf '\r\033[K  Work  %s' "$(fmt_time "$1")"
 }
 
-# Break phase: cat frame + timer, redrawn in place without clearing screen.
+# Break phase: cat frame, redrawn in place. No timer shown.
 draw_break() {
-    local frame="$1" remaining=$2 lcount=0
+    local frame="$1" lcount=0
     [[ $BREAK_LINES -gt 0 ]] && printf '\033[%dA' "$BREAK_LINES"
     while IFS= read -r line; do
         printf '\r\033[K%s\n' "$line"
         lcount=$(( lcount + 1 ))
     done <<< "$frame"
-    printf '\r\033[K  Break  %s' "$(fmt_time "$remaining")"
     BREAK_LINES=$lcount
+}
+
+# Erase the cat silently when it leaves.
+erase_cat() {
+    [[ $BREAK_LINES -gt 0 ]] && printf '\033[%dA\033[J' "$BREAK_LINES"
 }
 
 # ---------------------------------------------------------------------------
@@ -97,7 +101,7 @@ main() {
         rem=$BREAK_SECS
         local next_change=$(( (RANDOM % 5) + 2 ))
         while [[ $rem -gt 0 ]]; do
-            draw_break "${FRAMES[$fidx]}" "$rem"
+            draw_break "${FRAMES[$fidx]}"
             sleep 1
             rem=$(( rem - 1 ))
             next_change=$(( next_change - 1 ))
@@ -106,7 +110,7 @@ main() {
                 next_change=$(( (RANDOM % 5) + 2 ))
             fi
         done
-        printf '\n'
+        erase_cat
 
     done
 }
