@@ -56,7 +56,7 @@ draw_break() {
 
 erase_cat() {
     printf '\r\033[K  meow'
-    sleep 1
+    sleep 2
     [[ $BREAK_LINES -gt 0 ]] && printf '\033[%dA\033[J' "$BREAK_LINES"
     BREAK_LINES=0
 }
