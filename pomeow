@@ -29,7 +29,6 @@ load_frames() {
             fi
         fi
     done < "$CATS_FILE"
-    # capture last frame (no trailing ---)
     [[ $has_content -eq 1 ]] && FRAMES+=("$frame")
 }
 
@@ -46,29 +45,19 @@ draw_work() {
 }
 
 # Break phase: cat frame + timer, redrawn in place without clearing screen.
-# Uses cursor-up to reposition before each redraw; tracks line count for that.
 draw_break() {
     local frame="$1" remaining=$2 lcount=0
-
-    # Return cursor to the first line of the previous draw.
     [[ $BREAK_LINES -gt 0 ]] && printf '\033[%dA' "$BREAK_LINES"
-
-    # Print each frame line, clearing to end of terminal line.
     while IFS= read -r line; do
         printf '\r\033[K%s\n' "$line"
         lcount=$(( lcount + 1 ))
     done <<< "$frame"
-
-    # Print timer on its own line (no trailing newline — cursor stays here).
     printf '\r\033[K  Break  %s' "$(fmt_time "$remaining")"
-
-    # Record how many lines up to move on the next call.
-    # Cursor is on the timer line; moving up $lcount lines lands on line 1 of the frame.
     BREAK_LINES=$lcount
 }
 
 # ---------------------------------------------------------------------------
-# Terminal cleanup: restore cursor visibility, guarantee a final newline.
+# Terminal cleanup
 # ---------------------------------------------------------------------------
 cleanup() {
     trap - INT TERM EXIT
@@ -87,8 +76,6 @@ main() {
     [[ $nframes -gt 0 ]] || { printf 'pomeow: no frames found in cats.txt\n' >&2; exit 1; }
 
     trap cleanup INT TERM EXIT
-
-    # Hide cursor; add a blank line so the timer starts below the shell prompt.
     printf '\033[?25l\n'
 
     while true; do
@@ -106,8 +93,7 @@ main() {
         BREAK_LINES=0
         local fidx=0
         rem=$BREAK_SECS
-        local next_change=$(( (RANDOM % 5) + 2 ))   # first frame change: 2–6 s
-
+        local next_change=$(( (RANDOM % 5) + 2 ))
         while [[ $rem -gt 0 ]]; do
             draw_break "${FRAMES[$fidx]}" "$rem"
             sleep 1
