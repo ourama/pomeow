@@ -20,14 +20,21 @@ It is a cat. That is not optional.
 
 ---
 
+## Requirements
+
+- bash
+- macOS or Linux
+
 ## Install
 
 ```sh
 git clone https://github.com/ourama/pomeow.git
 cd pomeow
-chmod +x pomeow
-sudo ln -s "$PWD/pomeow" /usr/local/bin/pomeow
+sudo cp pomeow cats.txt /usr/local/bin/
+sudo chmod +x /usr/local/bin/pomeow
 ```
+
+After copying, the cloned directory can be removed.
 
 ## Usage
 
@@ -35,7 +42,18 @@ sudo ln -s "$PWD/pomeow" /usr/local/bin/pomeow
 $ pomeow
 ```
 
-Run it in a visible tmux pane. No flags. No config. Press `Ctrl+C` to quit.
+Run it in a visible terminal window or tmux pane. Press `Ctrl+C` to quit.
+
+## Customization
+
+| Variable           | Default | Description          |
+|--------------------|---------|----------------------|
+| `POMEOW_WORK_SECS` | `1500`  | Work phase (seconds) |
+| `POMEOW_BREAK_SECS`| random  | Break duration (3–5 min, random each cycle) |
+
+```sh
+POMEOW_WORK_SECS=3600 pomeow   # 60-minute work sessions
+```
 
 ## How it works
 
