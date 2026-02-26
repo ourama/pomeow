@@ -18,35 +18,31 @@ BREAK_LINES=0
 # Load ASCII frames from cats.txt (frames separated by lines containing ---)
 # ---------------------------------------------------------------------------
 load_frames() {
-    local frame="" has_content=0
+    local frame=""
     while IFS= read -r line; do
         if [[ "$line" == "---" ]]; then
-            [[ $has_content -eq 1 ]] && FRAMES+=("$frame")
-            frame=""; has_content=0
+            [[ -n "$frame" ]] && FRAMES+=("$frame")
+            frame=""
+        elif [[ -z "$frame" ]]; then
+            frame="$line"
         else
-            if [[ $has_content -eq 0 ]]; then
-                frame="$line"; has_content=1
-            else
-                frame+=$'\n'"$line"
-            fi
+            frame+=$'\n'"$line"
         fi
     done < "$CATS_FILE"
-    [[ $has_content -eq 1 ]] && FRAMES+=("$frame")
+    [[ -n "$frame" ]] && FRAMES+=("$frame")
 }
 
 # ---------------------------------------------------------------------------
-# Helpers
+# Display
 # ---------------------------------------------------------------------------
 fmt_time() {
     printf "%02d:%02d" $(( $1 / 60 )) $(( $1 % 60 ))
 }
 
-# Work phase: single-line timer, rewritten in place.
 draw_work() {
     printf '\r\033[K  Work  %s' "$(fmt_time "$1")"
 }
 
-# Break phase: cat frame, redrawn in place. No timer shown.
 draw_break() {
     local frame="$1" lcount=0
     [[ $BREAK_LINES -gt 0 ]] && printf '\033[%dA' "$BREAK_LINES"
@@ -57,9 +53,9 @@ draw_break() {
     BREAK_LINES=$lcount
 }
 
-# Erase the cat silently when it leaves.
 erase_cat() {
     [[ $BREAK_LINES -gt 0 ]] && printf '\033[%dA\033[J' "$BREAK_LINES"
+    BREAK_LINES=0
 }
 
 # ---------------------------------------------------------------------------
@@ -84,10 +80,12 @@ main() {
     trap cleanup INT TERM EXIT
     printf '\033[?25l\n'
 
+    local rem fidx next_change
+
     while true; do
 
         # --- Work phase ---
-        local rem=$WORK_SECS
+        rem=$WORK_SECS
         while [[ $rem -gt 0 ]]; do
             draw_work "$rem"
             sleep 1
@@ -96,10 +94,9 @@ main() {
         printf '\n'
 
         # --- Break phase ---
-        BREAK_LINES=0
-        local fidx=0
+        fidx=0
         rem=$BREAK_SECS
-        local next_change=$(( (RANDOM % 5) + 2 ))
+        next_change=$(( (RANDOM % 5) + 2 ))
         while [[ $rem -gt 0 ]]; do
             draw_break "${FRAMES[$fidx]}"
             sleep 1
