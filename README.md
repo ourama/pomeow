@@ -23,7 +23,7 @@ It is a cat. That is not optional.
 ## Install
 
 ```sh
-git clone https://github.com/yourusername/pomeow.git
+git clone https://github.com/ourama/pomeow.git
 cd pomeow
 chmod +x pomeow
 sudo ln -s "$PWD/pomeow" /usr/local/bin/pomeow
