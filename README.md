@@ -25,7 +25,7 @@ It is a cat. That is not optional.
 git clone https://github.com/yourusername/pomeow.git
 cd pomeow
 chmod +x pomeow
-ln -s "$PWD/pomeow" /usr/local/bin/pomeow
+sudo ln -s "$PWD/pomeow" /usr/local/bin/pomeow
 ```
 
 ## Usage
