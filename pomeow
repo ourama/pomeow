@@ -9,7 +9,6 @@ SCRIPT_DIR="$(cd "$(dirname "$SOURCE")" && pwd)"
 CATS_FILE="${SCRIPT_DIR}/cats.txt"
 
 WORK_SECS="${POMEOW_WORK_SECS:-$((25 * 60))}"
-BREAK_SECS="${POMEOW_BREAK_SECS:-$((4 * 60))}"
 
 declare -a FRAMES
 BREAK_LINES=0
@@ -55,6 +54,8 @@ draw_break() {
 }
 
 erase_cat() {
+    printf '\r\033[K  meow'
+    sleep 1
     [[ $BREAK_LINES -gt 0 ]] && printf '\033[%dA\033[J' "$BREAK_LINES"
     BREAK_LINES=0
 }
@@ -81,7 +82,7 @@ main() {
     trap cleanup INT TERM EXIT
     printf '\033[?25l\n'
 
-    local rem fidx next_change
+    local rem fidx next_change break_secs
 
     while true; do
 
@@ -94,12 +95,13 @@ main() {
         done
         printf '\n'
 
-        # --- Break phase ---
+        # --- Break phase (3–5 min, random each visit) ---
+        break_secs="${POMEOW_BREAK_SECS:-$(( (RANDOM % 3 + 3) * 60 ))}"
         fidx=0
-        rem=$BREAK_SECS
+        rem=$break_secs
         next_change=$(( (RANDOM % 5) + 2 ))
         while [[ $rem -gt 0 ]]; do
-            draw_break "${FRAMES[$fidx]}" $(( BREAK_SECS - rem ))
+            draw_break "${FRAMES[$fidx]}" $(( break_secs - rem ))
             sleep 1
             rem=$(( rem - 1 ))
             next_change=$(( next_change - 1 ))
