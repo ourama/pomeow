@@ -49,8 +49,9 @@ draw_break() {
         printf '\r\033[K%s\n' "$line"
         lcount=$(( lcount + 1 ))
     done <<< "$frame"
-    printf '\r\033[K  +%s' "$(fmt_time "$elapsed")"
-    BREAK_LINES=$lcount
+    printf '\r\033[K\n'
+    printf '\r\033[K  %s' "$(fmt_time "$elapsed")"
+    BREAK_LINES=$(( lcount + 1 ))
 }
 
 erase_cat() {
