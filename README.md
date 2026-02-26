@@ -6,7 +6,7 @@ The cat has arrived. Stop working.
  /\_/\
 ( o.o )
  > ^ <
-  Break  03:45
+  +01:32
 ```
 
 ---
@@ -38,12 +38,13 @@ Run it in a visible tmux pane. No flags. No config. Press `Ctrl+C` to quit.
 
 ## How it works
 
-| Phase | Duration | What happens        |
-|-------|----------|---------------------|
-| Work  | 25 min   | Countdown timer     |
-| Break | 4 min    | The cat arrives     |
+| Phase | Duration    | What happens                        |
+|-------|-------------|-------------------------------------|
+| Work  | 25 min      | Countdown timer                     |
+| Break | 3–5 min     | The cat arrives, elapsed time shown |
 
-The cat changes pose every 2–6 seconds.
+The cat stays for 3, 4, or 5 minutes — you won't know which.
+It changes pose every 2–6 seconds, then says `meow` and leaves.
 
 ## License
 
