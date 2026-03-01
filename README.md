@@ -30,7 +30,7 @@ It is a cat. That is not optional.
 ```sh
 git clone https://github.com/ourama/pomeow.git
 cd pomeow
-sudo cp pomeow cats.txt /usr/local/bin/
+sudo cp pomeow /usr/local/bin/
 sudo chmod +x /usr/local/bin/pomeow
 ```
 

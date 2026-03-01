@@ -3,33 +3,22 @@
 # pomeow — a cat that interrupts your terminal every Pomodoro break.
 #
 
-SOURCE="${BASH_SOURCE[0]}"
-while [ -L "$SOURCE" ]; do SOURCE="$(readlink "$SOURCE")"; done
-SCRIPT_DIR="$(cd "$(dirname "$SOURCE")" && pwd)"
-CATS_FILE="${SCRIPT_DIR}/cats.txt"
-
 WORK_SECS="${POMEOW_WORK_SECS:-$((25 * 60))}"
 
-declare -a FRAMES
 BREAK_LINES=0
 
 # ---------------------------------------------------------------------------
-# Load ASCII frames from cats.txt (frames separated by lines containing ---)
+# ASCII cat frames (use $'...' to preserve backslashes on bash 3.2/macOS)
 # ---------------------------------------------------------------------------
-load_frames() {
-    local frame=""
-    while IFS= read -r line; do
-        if [[ "$line" == "---" ]]; then
-            [[ -n "$frame" ]] && FRAMES+=("$frame")
-            frame=""
-        elif [[ -z "$frame" ]]; then
-            frame="$line"
-        else
-            frame+=$'\n'"$line"
-        fi
-    done < "$CATS_FILE"
-    [[ -n "$frame" ]] && FRAMES+=("$frame")
-}
+FRAMES=(
+    $' /\\_/\\\n( o.o )\n > ^ <'
+    $' /\\_/\\\n( -.- )\n > ^ <'
+    $' /\\_/\\\n( -.- )\n(_____)'
+    $' /\\_/\\\n( o.o )\n(_____)'
+    $' /\\_/\\\n( ^.^ )\n(_____)'
+    $' /\\_/\\\n( o.- )\n > ^ <'
+    $' /\\_/\\\n( >.< )\n(_____)'
+)
 
 # ---------------------------------------------------------------------------
 # Display
@@ -74,11 +63,8 @@ cleanup() {
 # Main
 # ---------------------------------------------------------------------------
 main() {
-    [[ -f "$CATS_FILE" ]] || { printf 'pomeow: cats.txt not found at %s\n' "$CATS_FILE" >&2; exit 1; }
-
-    load_frames
     local nframes=${#FRAMES[@]}
-    [[ $nframes -gt 0 ]] || { printf 'pomeow: no frames found in cats.txt\n' >&2; exit 1; }
+    [[ $nframes -gt 0 ]] || { printf 'pomeow: no frames found\n' >&2; exit 1; }
 
     trap cleanup INT TERM EXIT
     printf '\033[?25l\n'
