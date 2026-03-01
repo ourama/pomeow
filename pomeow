@@ -75,11 +75,13 @@ main() {
 
         # --- Work phase ---
         rem=$WORK_SECS
+        draw_work "$rem"
         while [[ $rem -gt 0 ]]; do
-            draw_work "$rem"
             sleep 1
             rem=$(( rem - 1 ))
+            draw_work "$rem"
         done
+        draw_work "$WORK_SECS"
         printf '\n'
 
         # --- Break phase (3–5 min, random each visit) ---
