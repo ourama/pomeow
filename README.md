@@ -28,8 +28,7 @@ It is a cat. That is not optional.
 ## Install
 
 ```sh
-sudo curl -fsSL https://raw.githubusercontent.com/ourama/pomeow/main/pomeow \
-  -o /usr/local/bin/pomeow
+sudo curl -fsSL https://raw.githubusercontent.com/ourama/pomeow/main/pomeow -o /usr/local/bin/pomeow
 sudo chmod +x /usr/local/bin/pomeow
 ```
 
