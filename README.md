@@ -28,13 +28,10 @@ It is a cat. That is not optional.
 ## Install
 
 ```sh
-git clone https://github.com/ourama/pomeow.git
-cd pomeow
-sudo cp pomeow /usr/local/bin/
+sudo curl -fsSL https://raw.githubusercontent.com/ourama/pomeow/main/pomeow \
+  -o /usr/local/bin/pomeow
 sudo chmod +x /usr/local/bin/pomeow
 ```
-
-After copying, the cloned directory can be removed.
 
 ## Usage
 
